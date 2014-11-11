@@ -7,6 +7,7 @@
 
 import scrapy
 
+
 class IdealistaItem(scrapy.Item):
     #Matching variables of every flat to be scrapped
     #id_idealista = scrapy.Field()

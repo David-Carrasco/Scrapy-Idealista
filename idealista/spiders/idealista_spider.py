@@ -1,14 +1,26 @@
 __author__ = 'David Carrasco'
 import scrapy
 from idealista.items import IdealistaItem
+from scrapy.contrib.spiders import CrawlSpider, Rule
+from scrapy.contrib.linkextractors import LinkExtractor
 
 
-class IdealistaSpider(scrapy.Spider):
+class IdealistaSpider(CrawlSpider):
     name = "idealista"
     allowed_domains = ["idealista.com"]
-    start_urls = ["http://www.idealista.com/venta-viviendas/madrid/carabanchel/vista-alegre/"]
+    ########################################################################
+    ###       Add the urls to crawl in the start_urls variable           ###
+    ########################################################################
+    start_urls = ["http://www.idealista.com/venta-viviendas/madrid/retiro/"]
 
-    def parse(self, response):
+    rules = (
+            # Filter all the flats paginated by the website following the pattern indicated
+            Rule(LinkExtractor(restrict_xpaths=('//*[@class="std16"]/a[last()]'), unique=True),
+                 callback='parse_flats',
+                 follow=True),
+        )
+
+    def parse_flats(self, response):
 
     	# Necessary in order to create the whole link towards the website
         default_url = 'http://idealista.com'
