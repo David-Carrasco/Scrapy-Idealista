@@ -33,7 +33,7 @@ class IdealistaSpider(CrawlSpider):
         prices = [int(flat.xpath('li[1]/text()').extract().pop().strip(' eur').replace('.',''))
                  for flat in flats_features]
 
-        sqfts = [int(flat.xpath('li[2]/text()').extract().pop().split(' ').pop(0))
+        sqfts = [int(flat.xpath('li[2]/text()').extract().pop().split(' ').pop(0).replace('.',''))
                  for flat in flats_features]
 
         rooms = [int(flat.xpath('li[3]/text()').extract().pop().split(' ').pop(0))
