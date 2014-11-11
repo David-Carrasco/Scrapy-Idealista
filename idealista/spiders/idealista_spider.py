@@ -11,7 +11,7 @@ class IdealistaSpider(CrawlSpider):
     ########################################################################
     ###       Add the urls to crawl in the start_urls variable           ###
     ########################################################################
-    start_urls = ["http://www.idealista.com/venta-viviendas/madrid/retiro/"]
+    start_urls = ["http://www.idealista.com/alquiler-viviendas/madrid/zona-norte/"]
 
     rules = (
             # Filter all the flats paginated by the website following the pattern indicated
