@@ -9,7 +9,7 @@ class IdealistaSpider(CrawlSpider):
     name = "idealista"
     allowed_domains = ["idealista.com"]
     ########################################################################
-    ###       Add the urls to crawl in the start_urls variable           ###
+    ###       Add the url to crawl in the start_urls variable           ###
     ########################################################################
     start_urls = ["http://www.idealista.com/alquiler-viviendas/madrid/zona-norte/"]
 
