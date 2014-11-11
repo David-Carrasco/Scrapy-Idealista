@@ -2,6 +2,7 @@ __author__ = 'David Carrasco'
 import scrapy
 from idealista.items import IdealistaItem
 
+
 class IdealistaSpider(scrapy.Spider):
     name = "idealista"
     allowed_domains = ["idealista.com"]
@@ -9,19 +10,27 @@ class IdealistaSpider(scrapy.Spider):
 
     def parse(self, response):
 
-    	# Necessary in order to create the whole link to the website
+    	# Necessary in order to create the whole link towards the website
         default_url = 'http://idealista.com'
 
-        prices = [price.xpath('text()').extract().pop()
-                  for price in response.xpath('//*[@class="col-0"]')]
-
-        links = [''.join(default_url + link.xpath('p/a/@href').extract().pop())
+        links = [str(''.join(default_url + link.xpath('p/a/@href').extract().pop()))
                  for link in response.xpath('//*[@class="location"]')]
 
-        print zip(prices, links)
+        flats_features = response.xpath('//*[@class="features"]')
 
-        for flat in zip(links, prices):
-            item = IdealistaItem()
-            item['price'] = flat[0]
-            item['link'] = flat[1]
+        prices = [int(flat.xpath('li[1]/text()').extract().pop().strip(' eur').replace('.',''))
+                 for flat in flats_features]
+
+        sqfts = [int(flat.xpath('li[2]/text()').extract().pop().split(' ').pop(0))
+                 for flat in flats_features]
+
+        rooms = [int(flat.xpath('li[3]/text()').extract().pop().split(' ').pop(0))
+                 for flat in flats_features]
+
+        sqtfs_m2 = [int(flat.xpath('li[4]/text()').extract().pop().split(' ').pop(0).replace('.',''))
+                    for flat in flats_features]
+
+        for flat in zip(links, prices, sqfts, sqtfs_m2, rooms):
+            item = IdealistaItem(link=flat[0], price=flat[1], sqft=flat[2],
+                                 sqft_m2=flat[3], rooms=flat[4])
             yield item
