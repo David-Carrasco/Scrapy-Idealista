@@ -16,7 +16,9 @@ Execute:
  
   Example: ```start_urls = ["http://www.idealista.com/venta-viviendas/madrid/retiro/"]```
 
-+ At the top of the project, execute the following command to crawl all the urls in ```start_urls```:
+  Note: Crawl only one url since all records will be exported to the same csv file
+
++ At the top of the project, execute the following command to crawl the url saved in ```start_urls```:
 
   ```scrapy crawl idealista -o <flats_file>.csv -t csv```
   
