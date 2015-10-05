@@ -15,7 +15,7 @@ class IdealistaSpider(CrawlSpider):
 
     rules = (
             # Filter all the flats paginated by the website following the pattern indicated
-            Rule(LinkExtractor(restrict_xpaths=('//*[@class="std16"]/a[last()]'), unique=True),
+            Rule(LinkExtractor(restrict_xpaths=("//a[@class='icon-arrow-right-after']"), unique=True),
                  callback='parse_flats',
                  follow=True),
         )
@@ -31,16 +31,20 @@ class IdealistaSpider(CrawlSpider):
         links = [str(''.join(default_url + link.xpath('a/@href').extract().pop()))
                  for link in info_flats_xpath]
 
-        prices = [int(flat.extract().replace('.',''))
+        prices = [int(flat.extract().replace('.','').strip())
                  for flat in prices_flats_xpath]
 
-        rooms = [int(flat.xpath("span[@class='item-detail'][1]/text()").extract().pop())
-                 for flat in info_flats_xpath]
+	addresses = [address.xpath('a/@title').extract().pop().encode('iso-8859-1') 
+		     for address in info_flats_xpath]
 
-        sqfts_m2 = [int(flat.xpath("span[@class='item-detail'][2]/text()").extract().pop())
-                    for flat in info_flats_xpath]
+        #rooms = [int(flat.xpath("span[@class='item-detail'][1]/text()").extract().pop().strip())
+        #         for flat in info_flats_xpath]
 
-        for flat in zip(links, prices, sqtfs_m2, rooms):
-            item = IdealistaItem(link=flat[0], price=flat[1], 
-                                 sqft_m2=flat[2], rooms=flat[3])
+        #sqfts_m2 = [int(flat.xpath("span[@class='item-detail'][2]/text()").extract().pop().replace('.','').strip())
+        #            for flat in info_flats_xpath]
+
+        #for flat in zip(links, prices, addresses, sqfts_m2, rooms):
+	for flat in zip(links, prices, addresses):
+            item = IdealistaItem(link=flat[0], price=flat[1], address=flat[2]) 
+                                 #sqft_m2=flat[2], rooms=flat[3])
             yield item

@@ -13,6 +13,6 @@ class IdealistaItem(scrapy.Item):
     #id_idealista = scrapy.Field()
     link = scrapy.Field()
     price = scrapy.Field()
-    sqft = scrapy.Field()
+    address = scrapy.Field()
     sqft_m2 = scrapy.Field()
     rooms = scrapy.Field()
