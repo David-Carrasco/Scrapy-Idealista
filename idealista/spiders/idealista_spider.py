@@ -25,24 +25,22 @@ class IdealistaSpider(CrawlSpider):
     	# Necessary in order to create the whole link towards the website
         default_url = 'http://idealista.com'
 
-        links = [str(''.join(default_url + link.xpath('p/a/@href').extract().pop()))
-                 for link in response.xpath('//*[@class="location"]')]
+	info_flats_xpath = response.xpath("//*[@class='item-info-container']")
+	prices_flats_xpath = response.xpath("//*[@class='row price-row clearfix']/span[@class='item-price']/text()")
 
-        flats_features = response.xpath('//*[@class="features"]')
+        links = [str(''.join(default_url + link.xpath('a/@href').extract().pop()))
+                 for link in info_flats_xpath]
 
-        prices = [int(flat.xpath('li[1]/text()').extract().pop().strip(' eur').replace('.',''))
-                 for flat in flats_features]
+        prices = [int(flat.extract().replace('.',''))
+                 for flat in prices_flats_xpath]
 
-        sqfts = [int(flat.xpath('li[2]/text()').extract().pop().split(' ').pop(0).replace('.',''))
-                 for flat in flats_features]
+        rooms = [int(flat.xpath("span[@class='item-detail'][1]/text()").extract().pop())
+                 for flat in info_flats_xpath]
 
-        rooms = [int(flat.xpath('li[3]/text()').extract().pop().split(' ').pop(0))
-                 for flat in flats_features]
+        sqfts_m2 = [int(flat.xpath("span[@class='item-detail'][2]/text()").extract().pop())
+                    for flat in info_flats_xpath]
 
-        sqtfs_m2 = [int(flat.xpath('li[4]/text()').extract().pop().split(' ').pop(0).replace('.',''))
-                    for flat in flats_features]
-
-        for flat in zip(links, prices, sqfts, sqtfs_m2, rooms):
-            item = IdealistaItem(link=flat[0], price=flat[1], sqft=flat[2],
-                                 sqft_m2=flat[3], rooms=flat[4])
+        for flat in zip(links, prices, sqtfs_m2, rooms):
+            item = IdealistaItem(link=flat[0], price=flat[1], 
+                                 sqft_m2=flat[2], rooms=flat[3])
             yield item
