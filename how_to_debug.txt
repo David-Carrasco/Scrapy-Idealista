@@ -1,0 +1,1 @@
+crapy parse --spider=idealista --loglevel=DEBUG -c parse_flats "URL"

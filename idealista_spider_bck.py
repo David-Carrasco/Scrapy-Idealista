@@ -14,9 +14,7 @@ class IdealistaSpider(CrawlSpider):
     #start_urls = ["https://www.idealista.com/venta-viviendas/leganes/el-carrascal/"]
     #start_urls = ['https://www.idealista.com/alquiler-viviendas/madrid/zona-norte/']
 
-    #start_urls = ['https://www.idealista.com/venta-viviendas/madrid/carabanchel/']
-
-    start_urls = ['https://www.idealista.com/venta-viviendas/madrid/carabanchel/con-estudios']
+    start_urls = ['https://www.idealista.com/venta-viviendas/madrid/carabanchel/']
 
     rules = (
             # Filter all the flats paginated by the website following the pattern indicated
@@ -37,7 +35,7 @@ class IdealistaSpider(CrawlSpider):
         links = [str(''.join(default_url + link.xpath('a/@href').extract().pop()))
                  for link in info_flats_xpath]
 
-        prices = [float(flat.extract().replace('.','').strip())
+        prices = [int(flat.extract().replace('.','').strip())
                  for flat in prices_flats_xpath]
 
 	discounts = [0 if len(discount.xpath("./*[@class='item-price-down icon-pricedown']/text()").extract()) < 1 else discount.xpath("./*[@class='item-price-down icon-pricedown']/text()").extract().pop().replace('.','').strip().split(' ').pop(0) for discount in discounts_xpath]
@@ -45,9 +43,12 @@ class IdealistaSpider(CrawlSpider):
 	addresses = [address.xpath('a/@title').extract().pop().encode('iso-8859-1') 
 		     for address in info_flats_xpath]
 	
-	rooms = [int(flat.xpath('span[@class="item-detail"]/small[contains(text(),"hab.")]/../text()').extract().pop().strip()) if len(flat.xpath('span[@class="item-detail"]/small[contains(text(),"hab.")]')) == 1 else None for flat in info_flats_xpath]
+        rooms = [int(flat.xpath("span[@class='item-detail'][1]/text()").extract().pop().strip())
+                 for flat in info_flats_xpath]
 
-	sqfts_m2 = [float(flat.xpath('span[@class="item-detail"]/small[starts-with(text(),"m")]/../text()').extract().pop().replace('.','').strip()) if len(flat.xpath('span[@class="item-detail"]/small[starts-with(text(),"m")]')) == 1 else None for flat in info_flats_xpath]
+        #sqfts_m2 = [int(flat.xpath("span[@class='item-detail'][2]/text()").extract().pop().replace('.','').strip()) for flat in info_flats_xpath]
+
+	sqfts_m2 = [flat.xpath("span[@class='item-detail'][2]/text()").extract().pop().replace('.','').strip() for flat in info_flats_xpath]
 
 	for flat in zip(links, prices, addresses, discounts, sqfts_m2, rooms):
             item = IdealistaItem(date=datetime.now().strftime('%Y-%m-%d'),
@@ -57,5 +58,6 @@ class IdealistaSpider(CrawlSpider):
 
     #Overriding parse_start_url to get the first page
     parse_start_url = parse_flats
+
 
 
