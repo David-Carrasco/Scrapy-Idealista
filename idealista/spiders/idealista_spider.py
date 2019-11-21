@@ -1,8 +1,8 @@
 __author__ = 'David Carrasco'
 import scrapy
 from idealista.items import IdealistaItem
-from scrapy.contrib.spiders import CrawlSpider, Rule
-from scrapy.contrib.linkextractors import LinkExtractor
+from scrapy.spiders import CrawlSpider, Rule
+from scrapy.linkextractors import LinkExtractor
 from datetime import datetime
 
 class IdealistaSpider(CrawlSpider):
