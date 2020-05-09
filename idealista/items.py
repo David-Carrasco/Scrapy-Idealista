@@ -18,4 +18,4 @@ class IdealistaItem(scrapy.Item):
     sqft_m2 = scrapy.Field()
     rooms = scrapy.Field()
     discount = scrapy.Field()
-
+    floor_elevator = scrapy.Field()
