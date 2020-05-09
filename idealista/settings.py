@@ -8,11 +8,45 @@
 #     http://doc.scrapy.org/en/latest/topics/settings.html
 #
 
+from .proxies import get_proxies
+
+
+###########################
+# Main configuration
+###########################
+
 BOT_NAME = 'idealista'
 
 SPIDER_MODULES = ['idealista.spiders']
 NEWSPIDER_MODULE = 'idealista.spiders'
 
-# Crawl responsibly by identifying yourself (and your website) on the user-agent
-#USER_AGENT = 'idealista (+http://www.yourdomain.com)'
-USER_AGENT = "Mozilla/5.0 (Windows NT 6.2; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/27.0.1453.93 Safari/537.36"
+DOWNLOADER_MIDDLEWARES = {
+    'scrapy.downloadermiddlewares.useragent.UserAgentMiddleware': None,
+    'scrapy_useragents.downloadermiddlewares.useragents.UserAgentsMiddleware': 500,
+    'rotating_proxies.middlewares.RotatingProxyMiddleware': 610,
+    'rotating_proxies.middlewares.BanDetectionMiddleware': 620    
+}
+
+DOWNLOAD_TIMEOUT = 3
+
+
+###########################
+# User agent configurarion
+###########################
+
+USER_AGENTS = [
+    ('Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.113 Safari/537.36'),
+    ('Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:76.0) Gecko/20100101 Firefox/76.0')
+    
+    # Add more user agents which actually work nowadays
+]
+
+#########################
+# Proxies configuration
+#########################
+
+RETRY_HTTP_CODES = [500, 502, 503, 504, 400, 403, 404, 408]
+
+ROTATING_PROXY_PAGE_RETRY_TIMES = 99999999999 # TODO: is it possible to setup this parameter with no limit?
+ROTATING_PROXY_LIST = get_proxies()
+

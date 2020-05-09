@@ -29,7 +29,7 @@ class IdealistaSpider(CrawlSpider):
         default_url = 'http://idealista.com'
         
         info_flats_xpath = response.xpath("//*[@class='item-info-container']")
-        prices_flats_xpath = response.xpath("//*[@class='row price-row clearfix']/span[@class='item-price']/text()")
+        prices_flats_xpath = response.xpath("//*[@class='row price-row clearfix']/span[@class='item-price h2-simulated']/text()")
         discounts_xpath = response.xpath("//*[@class='row price-row clearfix']")
 
         links = [str(''.join(default_url + link.xpath('a/@href').extract().pop()))
