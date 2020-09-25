@@ -1,5 +1,9 @@
 FROM python:3.8-slim
 
+# LABELS
+LABEL maintainer="Iván Alejandro Marugán <hello@ialejandro.rocks>" \
+      version="1.0"
+
 # ENV
 COPY idealista /app/idealista
 COPY scrapy.cfg /app
