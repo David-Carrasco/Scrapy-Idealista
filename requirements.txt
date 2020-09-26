@@ -1,3 +1,5 @@
-scrapy >= 2.0.0
-scrapy-rotating-proxies >= 0.6.0
-scrapy-useragents >= 0.0.1
+scrapy >= 2.0.*
+scrapy-rotating-proxies >= 0.6.*
+scrapy-useragents >= 0.0.*
+requests >= 2.24.*
+requests-html >= 0.10.*
