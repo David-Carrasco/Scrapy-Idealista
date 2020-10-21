@@ -27,7 +27,18 @@ DOWNLOADER_MIDDLEWARES = {
     'rotating_proxies.middlewares.BanDetectionMiddleware': 620    
 }
 
-DOWNLOAD_TIMEOUT = 3
+DEFAULT_REQUEST_HEADERS = {
+    'authority': 'www.idealista.com',
+    'upgrade-insecure-requests': '1',
+    'sec-fetch-site': 'none',
+    'sec-fetch-mode': 'navigate',
+    'sec-fetch-user': '?1',
+    'sec-fetch-dest':' document'
+}
+
+FEED_EXPORT_ENCODING='latin-1'
+
+DOWNLOAD_TIMEOUT = 10
 
 
 ###########################
