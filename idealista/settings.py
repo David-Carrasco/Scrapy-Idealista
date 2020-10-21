@@ -38,6 +38,8 @@ DEFAULT_REQUEST_HEADERS = {
 
 FEED_EXPORT_ENCODING='latin-1'
 
+DOWNLOAD_TIMEOUT = 10
+
 
 ###########################
 # User agent configurarion
