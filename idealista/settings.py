@@ -36,6 +36,8 @@ DEFAULT_REQUEST_HEADERS = {
     'sec-fetch-dest':' document'
 }
 
+FEED_EXPORT_ENCODING='latin-1'
+
 
 ###########################
 # User agent configurarion
