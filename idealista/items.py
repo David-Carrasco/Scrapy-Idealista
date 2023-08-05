@@ -9,8 +9,8 @@ import scrapy
 
 
 class IdealistaItem(scrapy.Item):
-    #Matching variables of every flat to be scrapped
-    #id_idealista = scrapy.Field()
+    # Matching variables of every flat to be scrapped
+    # id_idealista = scrapy.Field()
     date = scrapy.Field()
     link = scrapy.Field()
     price = scrapy.Field()
